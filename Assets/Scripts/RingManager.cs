@@ -13,7 +13,6 @@ public class RingManager : MonoBehaviour {
     public float scaleAboveLastMultiplier;
     public float speedMultiplier = 1.0f; 
     public float startingRingSpeed;
-    public float startingRotationRange;
     public float rotationMultiplier = 1.0f;
     public float destroyRingSize;
     public float rotationDegrees = 5.625f;
@@ -27,9 +26,11 @@ public class RingManager : MonoBehaviour {
 
     //items for controls and ring manipulation
     #region ControlVariables
-    public int selectedRing;
-    public float selectedUpscale;
+    private int selectedRing;
     public int upperSelectionLimit = 5;
+    public float timeBetweenShifts = 0.15f;
+    private float shiftTimer;
+    //temp ui elements
     public GameObject gameover;
     #endregion
 
@@ -37,7 +38,6 @@ public class RingManager : MonoBehaviour {
     {
         ringQueue = new Queue<RingController>();
         currentScaleSpeed = startingRingSpeed;
-        currentRotationRange = startingRotationRange;
         selectedRing = -1;
 	}
 
@@ -57,23 +57,44 @@ public class RingManager : MonoBehaviour {
         }
 
         //controls for selecting rings
-        if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && selectedRing < upperSelectionLimit)
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
-            int old = selectedRing;
-            SelectRing(++selectedRing, old);
+            if (selectedRing < upperSelectionLimit)
+            {
+                int old = selectedRing;
+                SelectRing(++selectedRing, old);
+            }
         }
-        if ((Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) && selectedRing > 0)
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
-            int old = selectedRing;
-            SelectRing(--selectedRing, old);
+            if (selectedRing > 0)
+            {
+                int old = selectedRing;
+                SelectRing(--selectedRing, old);
+            }
         }
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
-            ShiftRing(1);
+            shiftTimer += Time.deltaTime;
+            if (shiftTimer >= timeBetweenShifts)
+            {
+                shiftTimer = 0.0f;
+                ShiftRing(1);
+            }
+
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
-            ShiftRing(-1);
+            shiftTimer += Time.deltaTime;
+            if (shiftTimer >= timeBetweenShifts)
+            {
+                shiftTimer = 0.0f;
+                ShiftRing(-1);
+            }
+        }
+        else
+        {
+            shiftTimer = 0.0f;
         }
 
         //update each ring
@@ -146,14 +167,14 @@ public class RingManager : MonoBehaviour {
 
     }
 
-    public void AddRingToQueue(RingController newRing )
+    public void AddRingToQueue(RingController newRing, float perpetualRotationRange = 0.0f)
     {
         //set it's size relitive to the last
         float newScale = scaleOfLast * scaleAboveLastMultiplier;
         scaleOfLast = newScale;
         newRing.gameObject.transform.localScale = new Vector3(newScale, newScale, 1.0f);
         //set it's perpetual rotation
-        newRing.SetPerpetualMotion(Random.Range(currentRotationRange, -currentRotationRange));
+        newRing.SetPerpetualMotion(Random.Range(perpetualRotationRange, -perpetualRotationRange));
         
         //add ring to the queue
         ringQueue.Enqueue(newRing);
