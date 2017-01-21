@@ -28,6 +28,7 @@ public class RingManager : MonoBehaviour {
     public int selectedRing;
     public float selectedUpscale;
     public int upperSelectionLimit = 5;
+    public GameObject gameover;
     #endregion
 
     void Awake ()
@@ -37,8 +38,8 @@ public class RingManager : MonoBehaviour {
         currentRotationRange = startingRotationRange;
         selectedRing = -1;
 	}
-	
-	void Update ()
+
+    void Update()
     {
         //update scale speed and rotation range
         currentScaleSpeed *= speedMultiplier;
@@ -64,11 +65,11 @@ public class RingManager : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
-            ShiftRing(-1);
+            ShiftRing(1);
         }
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
-            ShiftRing(1);
+            ShiftRing(-1);
         }
 
         //update each ring
@@ -85,7 +86,7 @@ public class RingManager : MonoBehaviour {
             {
                 //set this ring to kill itself and remove it from the queue
                 //update the selected ring
-                if (selectedRing > 0)
+                if (selectedRing >= 0)
                 {
                     selectedRing -= 1;
                 }
@@ -100,6 +101,7 @@ public class RingManager : MonoBehaviour {
                 //lose the game
                 //hermit dies
                 ringQueue.Dequeue().DestroyRing(currentScaleSpeed);
+                gameover.SetActive(true);
             }
         }
 
