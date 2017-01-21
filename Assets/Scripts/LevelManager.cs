@@ -12,6 +12,9 @@ public class LevelManager : MonoBehaviour
 
     public float mSectionCoolDown = 2.0f;
 
+    [Range(0.0f, 1.0f)]
+    public float mEndOfSectionSpeedReduction = 0.8f;
+
     int mCurSection = 0;
     int mPatternsLeftInSection = 0;
 
@@ -37,6 +40,7 @@ public class LevelManager : MonoBehaviour
             mCoolDownTimeRemaining = mSectionCoolDown;
             mPatternsLeftInSection = mSections[mCurSection].mNumOfPatterns;
             mRingManager.SetScaleFactor(mSections[mCurSection].mSectionScaleFactor);
+            mRingManager.EndSection(mEndOfSectionSpeedReduction);
             MusicManager.GetInstance().FadeInSong(mSections[mCurSection].mSectionSong, mSectionCoolDown);
         }
         else if (ringNum < mMinNumRings && mCoolDownTimeRemaining < 0.0f)
