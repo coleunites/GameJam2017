@@ -46,11 +46,8 @@ public class RingManager : MonoBehaviour {
         //update scale speed and rotation range
         prevScalePeriod = currentScaleSpeed;
 		currentScaleSpeed *= speedMultiplier;
-<<<<<<< HEAD
-=======
         scaleSpeedTracker += currentScaleSpeed - prevScalePeriod;
         currentRotationRange *= rotationMultiplier;
->>>>>>> 550ed4a5dc696e3b4a25c84bec8e2fb7bdbaa433
         if (scaleOfLast > 5.0f)
         {
             float percentage = currentScaleSpeed;
