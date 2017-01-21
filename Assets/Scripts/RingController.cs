@@ -38,4 +38,9 @@ public class RingController : MonoBehaviour {
         percentage = 1.0f - percentage; // get the sacle factor
         transform.localScale = transform.localScale * percentage;
     }
+
+    public void DestroyRing(float timeScale)
+    {
+        Destroy(this.gameObject);
+    }
 }

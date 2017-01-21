@@ -31,8 +31,9 @@ public class LevelManager : MonoBehaviour
 
         if(ringNum == 0 && mPatternsLeftInSection == 0)
         {
-            mCurSection = (++mCurSection) % mSections.Count;
+            mCurSection = (mCurSection + 1) % mSections.Count;
             mCoolDownTimeRemaining = mSectionCoolDown;
+            mPatternsLeftInSection = mSections[mCurSection].mNumOfPatterns;
         }
         else if (ringNum < mMinNumRings && mCoolDownTimeRemaining < 0.0f)
         {
@@ -47,14 +48,18 @@ public class LevelManager : MonoBehaviour
 
     void AddPattern()
     {
-        int patternNum = Random.Range(mSections[mCurSection].mStartOfSection, mSections[mCurSection].mEndOfSection + 1);
-        Pattern curPattern = mPatterns[patternNum];
-        for (int i = 0; i < curPattern.mRings.Count; ++i)
+        if (mPatternsLeftInSection > 0)
         {
-            GameObject newRing = Instantiate(curPattern.mRings[i]);
-            RingController newRingController = newRing.GetComponent<RingController>();
-            newRingController.SetSpriteColor(mSections[mCurSection].mSectionColor);
-            mRingManager.AddRingToQueue(newRingController);
+            int patternNum = Random.Range(mSections[mCurSection].mStartOfSection, mSections[mCurSection].mEndOfSection + 1);
+            Pattern curPattern = mPatterns[patternNum];
+            for (int i = 0; i < curPattern.mRings.Count; ++i)
+            {
+                GameObject newRing = Instantiate(curPattern.mRings[i]);
+                RingController newRingController = newRing.GetComponent<RingController>();
+                newRingController.SetSpriteColor(mSections[mCurSection].mSectionColor);
+                mRingManager.AddRingToQueue(newRingController);
+            }
+            --mPatternsLeftInSection;
         }
     }
 }
