@@ -20,7 +20,7 @@ public class RingManager : MonoBehaviour {
 
     private float currentScaleSpeed;
     private float currentRotationRange;
-    private float scaleOfLast = 1.0f;
+    private float scaleOfLast = 5.0f;
     #endregion
 
     //items for controls and ring manipulation
@@ -30,7 +30,7 @@ public class RingManager : MonoBehaviour {
     public int upperSelectionLimit = 5;
     #endregion
 
-    void Start ()
+    void Awake ()
     {
         ringQueue = new Queue<RingController>();
         currentScaleSpeed = startingRingSpeed;
@@ -43,34 +43,6 @@ public class RingManager : MonoBehaviour {
         //update scale speed and rotation range
         currentScaleSpeed *= speedMultiplier;
         currentRotationRange *= rotationMultiplier;
-
-        foreach (RingController ring in ringQueue)
-        {
-            ring.Scale(currentScaleSpeed);
-            if (ring.gameObject.transform.localScale.x <= destroyRingSize)
-            {
-                //tell hermit controller to check if we survive this ring
-                if (hermit.CheckIfSurvies())
-                {
-                    //set this ring to kill itself and remove it from the queue
-                    ringQueue.Dequeue();
-                    //update the selected ring
-                    if (selectedRing > 0)
-                    {
-                        selectedRing--;
-                    }
-                    else
-                    {
-                        SelectRing(selectedRing);
-                    }
-                }
-                else
-                {
-                    //lose the game
-                    //hermit dies
-                }
-            }
-        }
 
         //controls for selecting rings
         if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && selectedRing < upperSelectionLimit)
@@ -91,6 +63,40 @@ public class RingManager : MonoBehaviour {
         {
             ShiftRing(-1);
         }
+
+        //update each ring
+        foreach (RingController ring in ringQueue)
+        {
+            ring.Scale(currentScaleSpeed);
+           
+        }
+
+        //check the smallest ring if it is close to us and check if we will survive it
+        if (ringQueue.Peek().gameObject.transform.localScale.x <= destroyRingSize)
+        {
+            //tell hermit controller to check if we survive this ring
+            if (hermit.CheckIfSurvies())
+            {
+                //set this ring to kill itself and remove it from the queue
+                ringQueue.Dequeue();
+                //update the selected ring
+                if (selectedRing > 0)
+                {
+                    selectedRing--;
+                }
+                else
+                {
+                    SelectRing(selectedRing);
+                }
+            }
+            else
+            {
+                //lose the game
+                //hermit dies
+                ringQueue.Dequeue();
+            }
+        }
+
     }
 
     private void SelectRing(int newRing, int oldring = -1)
