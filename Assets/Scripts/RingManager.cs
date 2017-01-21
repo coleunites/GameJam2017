@@ -37,8 +37,8 @@ public class RingManager : MonoBehaviour {
         currentRotationRange = startingRotationRange;
         selectedRing = -1;
 	}
-	
-	void Update ()
+
+    void Update()
     {
         //update scale speed and rotation range
         currentScaleSpeed *= speedMultiplier;
@@ -64,11 +64,11 @@ public class RingManager : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
-            ShiftRing(-1);
+            ShiftRing(1);
         }
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
-            ShiftRing(1);
+            ShiftRing(-1);
         }
 
         //update each ring
@@ -81,11 +81,11 @@ public class RingManager : MonoBehaviour {
         if (ringQueue.Count > 0 && ringQueue.Peek().gameObject.transform.localScale.x <= destroyRingSize)
         {
             //tell hermit controller to check if we survive this ring
-            if (hermit.CheckIfSurvies())
+            if (hermit.CheckIfSurvies() || true) //TEMPORARY '|| true'
             {
                 //set this ring to kill itself and remove it from the queue
                 //update the selected ring
-                if (selectedRing > 0)
+                if (selectedRing >= 0)
                 {
                     selectedRing -= 1;
                 }
