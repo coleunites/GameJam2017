@@ -44,6 +44,7 @@ public class RingManager : MonoBehaviour {
         currentScaleSpeed *= speedMultiplier;
         currentRotationRange *= rotationMultiplier;
 
+
         //controls for selecting rings
         if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && selectedRing < upperSelectionLimit)
         {
@@ -72,7 +73,7 @@ public class RingManager : MonoBehaviour {
         }
 
         //check the smallest ring if it is close to us and check if we will survive it
-        if (ringQueue.Peek().gameObject.transform.localScale.x <= destroyRingSize)
+        if (ringQueue.Count > 0 && ringQueue.Peek().gameObject.transform.localScale.x <= destroyRingSize)
         {
             //tell hermit controller to check if we survive this ring
             if (hermit.CheckIfSurvies())
