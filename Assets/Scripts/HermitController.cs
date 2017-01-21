@@ -4,7 +4,6 @@ using System.Collections;
 [RequireComponent(typeof(Rigidbody))]
 public class HermitController : MonoBehaviour
 {
-    
 
     public GameObject mSpriteObject;
 
@@ -17,8 +16,6 @@ public class HermitController : MonoBehaviour
     float mTimeElpased;
 
     bool mWillSurvive = false;
-    bool mPlayAdavanceAnim = false;
-    bool mIsRetreating = false;
 
     float mSpeedFactor = 1.0f;
 
@@ -30,45 +27,16 @@ public class HermitController : MonoBehaviour
 
     void Update()
     {
-        //if(mPlayAdavanceAnim)
-        //{
-        //    mTimeElpased += Time.deltaTime;
-        //    if (!mIsRetreating)
-        //    {
-        //        if (mTimeElpased >= mAdvanceDuration && !mIsRetreating)
-        //        {
-        //            mIsRetreating = true;
-        //            pos
-        //            mTimeElpased = 0.0f;
-        //        }
-        //        else
-        //        {
-        //
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (mTimeElpased > mRetreatDuration)
-        //        {
-        //            mPlayAdavanceAnim = false;
-        //            mIsRetreating = false;
-        //            mTimeElpased = 0.0f;
-        //        }
-        //        else
-        //        {
-        //
-        //        }
-        //    }
-        //}
+        
     }
 
     public bool CheckIfSurvies()
     {
-
+        bool returnVal = mWillSurvive;
         mWillSurvive = false;
+
         // play animation
-        mPlayAdavanceAnim = true;
-        return mWillSurvive;
+        return returnVal;
     }
 
     void OnTriggerEnter(Collider other)
