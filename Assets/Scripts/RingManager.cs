@@ -18,9 +18,9 @@ public class RingManager : MonoBehaviour {
     public float destroyRingSize;
     public float rotationDegrees = 5.625f;
 
-    private float currentScaleSpeed;
+    public float currentScaleSpeed;
     private float currentRotationRange;
-    private float scaleOfLast = 5.0f;
+    public float scaleOfLast = 5.0f;
     #endregion
 
     //items for controls and ring manipulation
@@ -43,8 +43,13 @@ public class RingManager : MonoBehaviour {
         //update scale speed and rotation range
         currentScaleSpeed *= speedMultiplier;
         currentRotationRange *= rotationMultiplier;
-        if(scaleOfLast > 5.0f)
-            scaleOfLast *= currentScaleSpeed;
+        if (scaleOfLast > 5.0f)
+        {
+            float percentage = currentScaleSpeed;
+            percentage *= Time.deltaTime * 0.1f; // multiply by 0.01f to convert of percentage to a nume of 0 to 1;
+            percentage = 1.0f - percentage; // get the sacle factor
+            scaleOfLast = scaleOfLast * percentage;
+        }
 
         //controls for selecting rings
         if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && selectedRing < upperSelectionLimit)
