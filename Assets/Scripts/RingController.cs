@@ -10,7 +10,8 @@ public class RingController : MonoBehaviour {
     // Update is called once per frame
     void Update ()
     {
-        transform.forward = Quaternion.AngleAxis(mPerpetualMovement * Time.deltaTime, Vector3.up) * transform.forward;
+        //transform.forward = Quaternion.AngleAxis(mPerpetualMovement * Time.deltaTime, Vector3.forward) * transform.up;
+        transform.Rotate(transform.forward * mPerpetualMovement * Time.deltaTime);
         Scale(mTestScale);
     }
 
@@ -28,7 +29,8 @@ public class RingController : MonoBehaviour {
     //Negitive degrees is left, postive degrees is right
     public void Rotate(float degrees)
     {
-        transform.forward = Quaternion.AngleAxis(degrees, Vector3.up) * transform.forward;
+        transform.Rotate(transform.forward * degrees);
+        //transform.forward = Quaternion.AngleAxis(degrees, Vector3.forward) * transform.up;
     }
 
     //postive percetage will scale down, negtive percetnage will scale up

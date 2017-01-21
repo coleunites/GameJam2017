@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class HermitController : MonoBehaviour
 {
 
@@ -10,8 +10,8 @@ public class HermitController : MonoBehaviour
     public float mAdvanceDuration;
     public float mRetreatDuration;
 
-    public Vector3 mAdvancePosition;
-    Vector3 mIntialPos;
+    public Vector2 mAdvancePosition;
+    Vector2 mIntialPos;
 
     float mTimeElpased;
 
@@ -39,12 +39,12 @@ public class HermitController : MonoBehaviour
         return returnVal;
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         mWillSurvive = true;
     }
 
-    void OnTriggerExit(Collider other)
+    void OnTriggerExit2D(Collider2D other)
     {
         mWillSurvive = false;
     }
