@@ -3,22 +3,20 @@ using System.Collections;
 
 public class RingController : MonoBehaviour {
 
+    public float mTestScale = 0.0f;
     public float mPerpetualMovement = 0.0f;
+    public SpriteRenderer mSprite;
 
     // Update is called once per frame
     void Update ()
     {
-        if(Input.GetKey(KeyCode.LeftArrow))
-        {
-            Rotate(-15.0f * Time.deltaTime);
-        }
-        else if(Input.GetKey(KeyCode.RightArrow))
-        {
-            Rotate(15.0f * Time.deltaTime);
-        }
-        //Scale(1.0f);
-
         transform.forward = Quaternion.AngleAxis(mPerpetualMovement * Time.deltaTime, Vector3.up) * transform.forward;
+        Scale(mTestScale);
+    }
+
+    public void SetSpriteColor(Color color)
+    {
+        mSprite.color = color;
     }
 
     //Negitive degrees is left, postive degrees is right
