@@ -43,7 +43,7 @@ public class RingManager : MonoBehaviour {
         //update scale speed and rotation range
         currentScaleSpeed *= speedMultiplier;
         currentRotationRange *= rotationMultiplier;
-
+        scaleOfLast *= currentScaleSpeed;
 
         //controls for selecting rings
         if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && selectedRing < upperSelectionLimit)
@@ -69,7 +69,6 @@ public class RingManager : MonoBehaviour {
         foreach (RingController ring in ringQueue)
         {
             ring.Scale(currentScaleSpeed);
-           
         }
 
         //check the smallest ring if it is close to us and check if we will survive it
