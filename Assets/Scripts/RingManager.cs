@@ -7,6 +7,7 @@ public class RingManager : MonoBehaviour {
     //RingManager holds and controls the queue for each individual ring entering the game
 
     //items for game flow
+    #region Gameplay
     private Queue<RingController> ringQueue;
     public HermitController hermit;
     public float scaleAboveLastMultiplier;
@@ -19,13 +20,17 @@ public class RingManager : MonoBehaviour {
     private float currentScaleSpeed;
     private float currentRotationRange;
     private float scaleOfLast = 1.0f;
+    #endregion
 
     //items for controls and ring manipulation
-    int selectedRing;
+    #region ControlVariables
+    private int selectedRing;
+    public float selectedScaleFactor;
+    #endregion
 
-
-	void Start ()
+    void Start ()
     {
+        ringQueue = new Queue<RingController>();
         currentScaleSpeed = startingRingSpeed;
         currentRotationRange = startingRotationRange;
 	}
@@ -46,6 +51,15 @@ public class RingManager : MonoBehaviour {
                 {
                     //set this ring to kill itself and remove it from the queue
                     ringQueue.Dequeue();
+                    //update the selected ring
+                    if (selectedRing > 0)
+                    {
+                        SelectRing(selectedRing--);
+                    }
+                    else
+                    {
+                        SelectRing(selectedRing);
+                    }
                 }
                 else
                 {
@@ -55,10 +69,21 @@ public class RingManager : MonoBehaviour {
             }
         }
 
-
+        //controls for selecting rings
 
 
 	}
+
+    private void SelectRing(int newRing, int oldring = -1)
+    {
+        int count = 0;
+        foreach (RingController ring in ringQueue)
+        {
+
+
+        }
+
+    }
 
     public void AddRingToQueue(RingController newRing )
     {
