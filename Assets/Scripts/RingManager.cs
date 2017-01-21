@@ -164,4 +164,9 @@ public class RingManager : MonoBehaviour {
     {
         scaleAboveLastMultiplier = scaleFactor;
     }
+
+    public void EndSection(float percentage)
+    {
+        currentRotationRange *= percentage;
+    }
 }
