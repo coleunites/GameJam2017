@@ -15,7 +15,7 @@ public class HermitController : MonoBehaviour
 
     float mTimeElpased;
 
-    bool mWillSurvive = false;
+    public bool mWillSurvive = false;
 
     float mSpeedFactor = 1.0f;
 
