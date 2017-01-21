@@ -65,7 +65,7 @@ public class RingManager : MonoBehaviour {
                 SelectRing(++selectedRing, old);
             }
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
             if (selectedRing > 0)
             {
@@ -73,7 +73,7 @@ public class RingManager : MonoBehaviour {
                 SelectRing(--selectedRing, old);
             }
         }
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+        else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
             shiftTimer += Time.deltaTime;
             if (shiftTimer >= timeBetweenShifts)
@@ -83,9 +83,18 @@ public class RingManager : MonoBehaviour {
             }
 
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
-            ShiftRing(-1);
+            shiftTimer += Time.deltaTime;
+            if (shiftTimer >= timeBetweenShifts)
+            {
+                shiftTimer = 0.0f;
+                ShiftRing(-1);
+            }
+        }
+        else
+        {
+            shiftTimer = 0.0f;
         }
 
         //update each ring
