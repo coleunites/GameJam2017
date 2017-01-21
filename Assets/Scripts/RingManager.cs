@@ -43,7 +43,8 @@ public class RingManager : MonoBehaviour {
         //update scale speed and rotation range
         currentScaleSpeed *= speedMultiplier;
         currentRotationRange *= rotationMultiplier;
-        scaleOfLast *= currentScaleSpeed;
+        if(scaleOfLast > 5.0f)
+            scaleOfLast *= currentScaleSpeed;
 
         //controls for selecting rings
         if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && selectedRing < upperSelectionLimit)
@@ -78,7 +79,7 @@ public class RingManager : MonoBehaviour {
             if (hermit.CheckIfSurvies())
             {
                 //set this ring to kill itself and remove it from the queue
-                ringQueue.Dequeue();
+                ringQueue.Dequeue().DestroyRing(currentScaleSpeed);
                 //update the selected ring
                 if (selectedRing > 0)
                 {
@@ -93,7 +94,7 @@ public class RingManager : MonoBehaviour {
             {
                 //lose the game
                 //hermit dies
-                ringQueue.Dequeue();
+                ringQueue.Dequeue().DestroyRing(currentScaleSpeed);
             }
         }
 
