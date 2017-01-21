@@ -16,6 +16,7 @@ public class RingManager : MonoBehaviour {
     public float startingRotationRange;
     public float rotationMultiplier = 1.0f;
     public float destroyRingSize;
+    public float rotationDegrees = 5.625f;
 
     private float currentScaleSpeed;
     private float currentRotationRange;
@@ -25,7 +26,8 @@ public class RingManager : MonoBehaviour {
     //items for controls and ring manipulation
     #region ControlVariables
     private int selectedRing;
-    public float selectedScaleFactor;
+    public float selectedUpscale;
+    public int upperSelectionLimit = 5;
     #endregion
 
     void Start ()
@@ -33,6 +35,7 @@ public class RingManager : MonoBehaviour {
         ringQueue = new Queue<RingController>();
         currentScaleSpeed = startingRingSpeed;
         currentRotationRange = startingRotationRange;
+        selectedRing = -1;
 	}
 	
 	void Update ()
@@ -54,7 +57,7 @@ public class RingManager : MonoBehaviour {
                     //update the selected ring
                     if (selectedRing > 0)
                     {
-                        SelectRing(selectedRing--);
+                        selectedRing--;
                     }
                     else
                     {
@@ -70,19 +73,51 @@ public class RingManager : MonoBehaviour {
         }
 
         //controls for selecting rings
-
-
-	}
+        if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && selectedRing < upperSelectionLimit)
+        {
+            int old = selectedRing;
+            SelectRing(++selectedRing, old);
+        }
+        if ((Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) && selectedRing > 0)
+        {
+            int old = selectedRing;
+            SelectRing(--selectedRing, old);
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        {
+            ShiftRing(1);
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        {
+            ShiftRing(-1);
+        }
+    }
 
     private void SelectRing(int newRing, int oldring = -1)
     {
         int count = 0;
         foreach (RingController ring in ringQueue)
         {
-
-
+            if (count == newRing)
+                ring.gameObject.transform.localScale = new Vector3(ring.gameObject.transform.localScale.x + selectedUpscale, 1.0f, ring.gameObject.transform.localScale.z + selectedUpscale);
+            if(count == oldring)
+                ring.gameObject.transform.localScale = new Vector3(ring.gameObject.transform.localScale.x - selectedUpscale, 1.0f, ring.gameObject.transform.localScale.z - selectedUpscale);
+            count++;
         }
 
+    }
+
+    private void ShiftRing(int direction) //left 0, right 1
+    {
+        int count = 0;
+        foreach (RingController ring in ringQueue)
+        {
+            if (count == selectedRing)
+            {
+                ring.Rotate(rotationDegrees * direction);
+                break;
+            }
+        }
     }
 
     public void AddRingToQueue(RingController newRing )
