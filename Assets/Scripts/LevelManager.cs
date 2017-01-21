@@ -13,7 +13,7 @@ public class LevelManager : MonoBehaviour
     public float mSectionCoolDown = 2.0f;
 
     [Range(0.0f, 1.0f)]
-    public float mEndOfSectionSpeedReduction = 0.8f;
+    public float mEndOfSectionSpeedReduction = 0.15f;
 
     int mCurSection = 0;
     int mPatternsLeftInSection = 0;
