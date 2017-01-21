@@ -3,14 +3,10 @@ using System.Collections;
 
 public class RingController : MonoBehaviour {
 
-	// Use this for initialization
-	void Start ()
-    {
-	
-	}
-	
-	// Update is called once per frame
-	void Update ()
+    public float mPerpetualMovement = 0.0f;
+
+    // Update is called once per frame
+    void Update ()
     {
         if(Input.GetKey(KeyCode.LeftArrow))
         {
@@ -20,13 +16,21 @@ public class RingController : MonoBehaviour {
         {
             Rotate(15.0f * Time.deltaTime);
         }
-        Scale(1.0f);
-	}
+        //Scale(1.0f);
+
+        transform.forward = Quaternion.AngleAxis(mPerpetualMovement * Time.deltaTime, Vector3.up) * transform.forward;
+    }
+
+    //Negitive degrees is left, postive degrees is right
+    public void SetPerpetualMotion(float speedInDeg)
+    {
+        mPerpetualMovement = speedInDeg;
+    }
 
     //Negitive degrees is left, postive degrees is right
     public void Rotate(float degrees)
     {
-        transform.forward = Quaternion.AngleAxis(degrees, Vector3.up) * transform.forward;
+        transform.forward = Quaternion.AngleAxis(degrees * Time.deltaTime, Vector3.up) * transform.forward;
     }
 
     //postive percetage will scale down, negtive percetnage will scale up
