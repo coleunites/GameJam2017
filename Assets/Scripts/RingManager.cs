@@ -160,5 +160,8 @@ public class RingManager : MonoBehaviour {
         return ringQueue.Count;
     }
     
-
+    public void SetScaleFactor(float scaleFactor)
+    {
+        scaleAboveLastMultiplier = scaleFactor;
+    }
 }

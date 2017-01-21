@@ -21,6 +21,7 @@ public class LevelManager : MonoBehaviour
 	void Start ()
     {
         mPatternsLeftInSection = mSections[mCurSection].mNumOfPatterns;
+        mRingManager.SetScaleFactor(mSections[mCurSection].mSectionScaleFactor);
         AddPattern();      
     }
 	
@@ -34,6 +35,7 @@ public class LevelManager : MonoBehaviour
             mCurSection = (mCurSection + 1) % mSections.Count;
             mCoolDownTimeRemaining = mSectionCoolDown;
             mPatternsLeftInSection = mSections[mCurSection].mNumOfPatterns;
+            mRingManager.SetScaleFactor(mSections[mCurSection].mSectionScaleFactor);
         }
         else if (ringNum < mMinNumRings && mCoolDownTimeRemaining < 0.0f)
         {
@@ -71,6 +73,7 @@ public class Section
     public int mEndOfSection = 0;
     public int mNumOfPatterns = 0;
     public Color mSectionColor;
+    public float mSectionScaleFactor = 1.0f;
 }
 
 [System.Serializable]
