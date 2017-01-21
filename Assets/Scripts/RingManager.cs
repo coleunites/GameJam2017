@@ -21,6 +21,8 @@ public class RingManager : MonoBehaviour {
 	public float currentScaleSpeed;
     private float currentRotationRange;
     private float scaleOfLast = 5.0f;
+    private float scaleSpeedTracker = 0.0f;
+    private float prevScalePeriod = 0.0f;
     #endregion
 
     //items for controls and ring manipulation
@@ -42,7 +44,9 @@ public class RingManager : MonoBehaviour {
     void Update()
     {
         //update scale speed and rotation range
+        prevScalePeriod = currentScaleSpeed;
 		currentScaleSpeed *= speedMultiplier;
+        scaleSpeedTracker += currentScaleSpeed - prevScalePeriod;
         currentRotationRange *= rotationMultiplier;
         if (scaleOfLast > 5.0f)
         {
@@ -167,6 +171,7 @@ public class RingManager : MonoBehaviour {
 
     public void EndSection(float percentage)
     {
-        currentRotationRange *= percentage;
+        currentScaleSpeed -= (scaleSpeedTracker * percentage);
+        scaleSpeedTracker = 0.0f;
     }
 }
