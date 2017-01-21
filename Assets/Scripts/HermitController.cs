@@ -15,7 +15,7 @@ public class HermitController : MonoBehaviour
 
     float mTimeElpased;
 
-    public bool mWillSurvive = false;
+    public bool mWillSurvive = true;
 
     float mSpeedFactor = 1.0f;
 
@@ -33,7 +33,7 @@ public class HermitController : MonoBehaviour
     public bool CheckIfSurvies()
     {
         bool returnVal = mWillSurvive;
-        mWillSurvive = false;
+		mWillSurvive = true;
 
         // play animation
         return returnVal;
@@ -41,11 +41,11 @@ public class HermitController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        mWillSurvive = true;
+		mWillSurvive = false;
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        mWillSurvive = false;
+		mWillSurvive = true;
     }
 }
