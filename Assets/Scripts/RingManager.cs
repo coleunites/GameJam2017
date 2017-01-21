@@ -18,14 +18,14 @@ public class RingManager : MonoBehaviour {
     public float destroyRingSize;
     public float rotationDegrees = 5.625f;
 
-    public float currentScaleSpeed;
+    private float currentScaleSpeed;
     private float currentRotationRange;
-    public float scaleOfLast = 5.0f;
+    private float scaleOfLast = 5.0f;
     #endregion
 
     //items for controls and ring manipulation
     #region ControlVariables
-    private int selectedRing;
+    public int selectedRing;
     public float selectedUpscale;
     public int upperSelectionLimit = 5;
     #endregion
@@ -84,16 +84,16 @@ public class RingManager : MonoBehaviour {
             if (hermit.CheckIfSurvies())
             {
                 //set this ring to kill itself and remove it from the queue
-                ringQueue.Dequeue().DestroyRing(currentScaleSpeed);
                 //update the selected ring
                 if (selectedRing > 0)
                 {
-                    selectedRing--;
+                    selectedRing -= 1;
                 }
                 else
                 {
                     SelectRing(selectedRing);
                 }
+                ringQueue.Dequeue().DestroyRing(currentScaleSpeed);
             }
             else
             {
@@ -135,7 +135,9 @@ public class RingManager : MonoBehaviour {
                 ring.Rotate(rotationDegrees * direction);
                 break;
             }
+            count++;
         }
+
     }
 
     public void AddRingToQueue(RingController newRing )
@@ -143,7 +145,7 @@ public class RingManager : MonoBehaviour {
         //set it's size relitive to the last
         float newScale = scaleOfLast * scaleAboveLastMultiplier;
         scaleOfLast = newScale;
-        newRing.gameObject.transform.localScale = new Vector3(newScale, 1.0f, newScale);
+        newRing.gameObject.transform.localScale = new Vector3(newScale, newScale, 1.0f);
         //set it's perpetual rotation
         newRing.SetPerpetualMotion(Random.Range(currentRotationRange, -currentRotationRange));
         
