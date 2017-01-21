@@ -28,6 +28,7 @@ public class RingManager : MonoBehaviour {
     public int selectedRing;
     public float selectedUpscale;
     public int upperSelectionLimit = 5;
+    public GameObject gameover;
     #endregion
 
     void Awake ()
@@ -81,7 +82,7 @@ public class RingManager : MonoBehaviour {
         if (ringQueue.Count > 0 && ringQueue.Peek().gameObject.transform.localScale.x <= destroyRingSize)
         {
             //tell hermit controller to check if we survive this ring
-            if (hermit.CheckIfSurvies() || true) //TEMPORARY '|| true'
+            if (hermit.CheckIfSurvies())
             {
                 //set this ring to kill itself and remove it from the queue
                 //update the selected ring
@@ -100,6 +101,7 @@ public class RingManager : MonoBehaviour {
                 //lose the game
                 //hermit dies
                 ringQueue.Dequeue().DestroyRing(currentScaleSpeed);
+                gameover.SetActive(true);
             }
         }
 
