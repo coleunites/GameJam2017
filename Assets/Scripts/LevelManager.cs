@@ -12,10 +12,10 @@ public class LevelManager : MonoBehaviour
 
     public float mSectionCoolDown = 2.0f;
 
-    public int mCurSection = 0;
-    public int mPatternsLeftInSection = 0;
+    int mCurSection = 0;
+    int mPatternsLeftInSection = 0;
 
-    public float mCoolDownTimeRemaining = 0.0f;
+    float mCoolDownTimeRemaining = 0.0f;
     public float mFirstSongFadeIn = 1.0f;
 	// Use this for initialization
 	void Start ()
