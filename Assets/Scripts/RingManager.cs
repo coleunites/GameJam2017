@@ -64,11 +64,11 @@ public class RingManager : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
-            ShiftRing(1);
+            ShiftRing(-1);
         }
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
-            ShiftRing(-1);
+            ShiftRing(1);
         }
 
         //update each ring
@@ -111,9 +111,15 @@ public class RingManager : MonoBehaviour {
         foreach (RingController ring in ringQueue)
         {
             if (count == newRing)
-                ring.gameObject.transform.localScale = new Vector3(ring.gameObject.transform.localScale.x + selectedUpscale, 1.0f, ring.gameObject.transform.localScale.z + selectedUpscale);
-            if(count == oldring)
-                ring.gameObject.transform.localScale = new Vector3(ring.gameObject.transform.localScale.x - selectedUpscale, 1.0f, ring.gameObject.transform.localScale.z - selectedUpscale);
+            {
+                //ring.gameObject.transform.localScale = new Vector3(ring.gameObject.transform.localScale.x + selectedUpscale, 1.0f, ring.gameObject.transform.localScale.z + selectedUpscale);
+                ring.SetSpriteColor(Color.white);
+            }
+            if (count == oldring)
+            {
+                //ring.gameObject.transform.localScale = new Vector3(ring.gameObject.transform.localScale.x - selectedUpscale, 1.0f, ring.gameObject.transform.localScale.z - selectedUpscale);
+                ring.SetSpriteColor(Color.black);
+            }
             count++;
         }
 

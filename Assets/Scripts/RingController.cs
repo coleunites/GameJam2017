@@ -28,7 +28,7 @@ public class RingController : MonoBehaviour {
     //Negitive degrees is left, postive degrees is right
     public void Rotate(float degrees)
     {
-        transform.forward = Quaternion.AngleAxis(degrees * Time.deltaTime, Vector3.up) * transform.forward;
+        transform.forward = Quaternion.AngleAxis(degrees, Vector3.up) * transform.forward;
     }
 
     //postive percetage will scale down, negtive percetnage will scale up
