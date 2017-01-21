@@ -16,13 +16,14 @@ public class LevelManager : MonoBehaviour
     public int mPatternsLeftInSection = 0;
 
     public float mCoolDownTimeRemaining = 0.0f;
-
+    public float mFirstSongFadeIn = 1.0f;
 	// Use this for initialization
 	void Start ()
     {
         mPatternsLeftInSection = mSections[mCurSection].mNumOfPatterns;
         mRingManager.SetScaleFactor(mSections[mCurSection].mSectionScaleFactor);
-        AddPattern();      
+        AddPattern();
+        MusicManager.GetInstance().FadeInSong(mSections[mCurSection].mSectionSong, mFirstSongFadeIn);     
     }
 	
 	// Update is called once per frame
@@ -36,6 +37,7 @@ public class LevelManager : MonoBehaviour
             mCoolDownTimeRemaining = mSectionCoolDown;
             mPatternsLeftInSection = mSections[mCurSection].mNumOfPatterns;
             mRingManager.SetScaleFactor(mSections[mCurSection].mSectionScaleFactor);
+            MusicManager.GetInstance().FadeInSong(mSections[mCurSection].mSectionSong, mSectionCoolDown);
         }
         else if (ringNum < mMinNumRings && mCoolDownTimeRemaining < 0.0f)
         {
@@ -74,6 +76,7 @@ public class Section
     public int mNumOfPatterns = 0;
     public Color mSectionColor;
     public float mSectionScaleFactor = 1.0f;
+    public Songs mSectionSong = Songs.slow;
 }
 
 [System.Serializable]
