@@ -11,7 +11,7 @@ public class ImageSwap : MonoBehaviour {
     private bool playing;
     private bool loop;
 	// Use this for initialization
-	void Start ()
+	void Awake ()
     {
         currentSprite = 0;
         playing = false;
@@ -24,17 +24,18 @@ public class ImageSwap : MonoBehaviour {
     {
         if (playing)
         {
-            timer += Time.deltaTime;
+            timer += Time.unscaledDeltaTime;
             if (timer >= animateOverTime)
             {
                 NextSprite();
+                timer = 0.0f;
             } 
 
         }
 
     }
 
-    public void Play(bool doLoop = false, float playOver = 1.0f)
+    public void Play(bool doLoop = false, float playOver = 0.6f)
     {
         if(spriteList.Length > 0)
         animateOverTime = playOver / spriteList.Length;
@@ -47,16 +48,23 @@ public class ImageSwap : MonoBehaviour {
     public void NextSprite()
     {
         currentSprite++;
-        if (currentSprite >= spriteList.Length || currentSprite < 0)
+        if (currentSprite < 0)
+            currentSprite = 0;
+
+        if (currentSprite >= spriteList.Length )
         {
             if (playing)
-                if(!loop)
+            {
+                if (!loop)
+                {
                     playing = false;
-            else
-                currentSprite = 0;
+                    return;
+                }
+            }
+            currentSprite = 0;
         }
-
-        this.GetComponent<Image>().sprite = spriteList[currentSprite];
+        if (spriteList.Length > 0)
+            this.GetComponent<Image>().sprite = spriteList[currentSprite];
     }
 
     //switches sprite to one at specific index. Will switch to index 0 if specified index is out of range.  
