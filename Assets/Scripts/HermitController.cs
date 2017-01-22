@@ -67,12 +67,6 @@ public class HermitController : MonoBehaviour
     {
         mTimeElpased += Time.deltaTime;
 
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            mTimeElpased = 0.0f;
-            mCurState = HermitState.advancing;
-        }
-
         switch(mCurState)
         {
             case HermitState.idle:
