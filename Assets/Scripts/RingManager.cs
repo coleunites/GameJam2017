@@ -19,10 +19,11 @@ public class RingManager : MonoBehaviour {
     public UiManager uiManager;
     public float firstRing = 4.0f;
 
-	public float currentScaleSpeed;
     public Color selectedColor = Color.white;
     public Detector detector;
+    public float maxScaleSpeed = Mathf.Infinity;
 
+	public float currentScaleSpeed;
     private Color oldColor;
     private Color newColor;
     private float currentRotationRange;
@@ -53,7 +54,7 @@ public class RingManager : MonoBehaviour {
     {
         //update scale speed and rotation range
         prevScalePeriod = currentScaleSpeed;
-		currentScaleSpeed *= speedMultiplier;
+		currentScaleSpeed = Mathf.Clamp(currentScaleSpeed * speedMultiplier, -maxScaleSpeed, maxScaleSpeed);
 
         hermit.MultiplySpeedFactor(speedMultiplier);
 
@@ -150,7 +151,7 @@ public class RingManager : MonoBehaviour {
 
         }
 
-        if (ringQueue.Count == 1)
+        if (ringQueue.Count > 0)
         {
             detector.SetClosestRing(ringQueue.Peek().GetId());
         }
