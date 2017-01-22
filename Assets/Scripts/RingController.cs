@@ -7,15 +7,36 @@ public class RingController : MonoBehaviour
     public SpriteRenderer mSprite;
     Color mAlpha;
 
+    public GameObject mCollider;
+
+    public float mDestroyedScale = 0.05f;
+    public float mDestroyedDuration = 0.5f;
+
+    bool mDestroyed = false;
+
     float mDistanceToStartFade = Mathf.Infinity;
     float mDistanceToEndFade = Mathf.Infinity;
     float mAlphaMax = 1.0f;
+    float mTimeElpased = 0.0f;
+    Vector3 mScaleBeforeDeath;
 
     // Update is called once per frame
     void Update ()
     {
         transform.Rotate(transform.forward * mPerpetualMovement * Time.deltaTime);
-        if(mSprite.bounds.extents.x < mDistanceToStartFade)
+        if(mDestroyed)
+        {
+            mTimeElpased += Time.deltaTime;
+            float t = mTimeElpased / mDestroyedDuration;
+            mAlpha.a = Mathf.Lerp(1.0f, 0.0f, t);
+            mSprite.color = mAlpha;
+            transform.localScale = Vector3.Lerp(mScaleBeforeDeath, new Vector3(mDestroyedScale, mDestroyedScale), t);
+            if(mTimeElpased >= mDestroyedDuration)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+        else if(mSprite.bounds.extents.x < mDistanceToStartFade)
         {
             mAlpha = mSprite.color;
             if(mSprite.bounds.extents.x > mDistanceToEndFade)
@@ -28,8 +49,6 @@ public class RingController : MonoBehaviour
             }
             mSprite.color = mAlpha;
         }
-
-        Debug.Log(mSprite.bounds.extents);
     }
 
     public void SetSpriteColor(Color color)
@@ -59,7 +78,14 @@ public class RingController : MonoBehaviour
 
     public void DestroyRing(float timeScale)
     {
-        Destroy(this.gameObject);
+        if(mCollider == null)
+        {
+            mCollider = gameObject.GetComponentInChildren<Collider2D>().gameObject;
+        }
+        mCollider.SetActive(false);
+        mDestroyed = true;
+        mScaleBeforeDeath = transform.localScale;
+        //Destroy(this.gameObject);
     }
 
     public void SetFadeDistances(float distToStartFade, float distToEndFade)
