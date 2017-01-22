@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UiManager : MonoBehaviour {
 
@@ -96,7 +97,8 @@ public class UiManager : MonoBehaviour {
                 if (Input.GetKeyUp(KeyCode.Space))
                 {
                     //restart the game
-                    EnableNew(CurrentState.TitleScreen);
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
                 }
                 break;
             default:
