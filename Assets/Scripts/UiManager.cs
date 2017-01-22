@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class UiManager : MonoBehaviour {
 
     public GameObject obj_GameOver;
+    private ImageSwap img_GameOver;
     public GameObject obj_InGame;
     public GameObject obj_TitleScreen;
     private ImageSwap[] img_DirInput;
@@ -28,6 +29,7 @@ public class UiManager : MonoBehaviour {
         img_DirInput[2] = obj_InGame.transform.FindChild("Img_Left").GetComponent<ImageSwap>();
         img_DirInput[3] = obj_InGame.transform.FindChild("Img_Right").GetComponent<ImageSwap>();
         txt_Score = obj_InGame.transform.FindChild("Txt_Score").GetComponent<Text>();
+        img_GameOver = obj_GameOver.transform.FindChild("Img_GameOver").GetComponent<ImageSwap>();
 
         currentState = CurrentState.TitleScreen;
         EnableNew(CurrentState.InGame); //should start on title screen but we don't have that yet. 
@@ -87,9 +89,8 @@ public class UiManager : MonoBehaviour {
     public void GameOver()
     {
 
-        currentState = CurrentState.LoseGame;
-        //set the score of the game over screen. 
-
+        EnableNew(CurrentState.LoseGame);
+        img_GameOver.Play();
     }
 
     public void UpdateScore(int newScore)
