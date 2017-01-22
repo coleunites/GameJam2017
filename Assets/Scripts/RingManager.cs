@@ -16,6 +16,7 @@ public class RingManager : MonoBehaviour {
     public float rotationMultiplier = 1.0f;
     public float destroyRingSize;
     public float rotationDegrees = 5.625f;
+    public UiManager uiManager;
 
 	public float currentScaleSpeed;
     private float currentRotationRange;
@@ -30,8 +31,6 @@ public class RingManager : MonoBehaviour {
     public int upperSelectionLimit = 5;
     public float timeBetweenShifts = 0.15f;
     private float shiftTimer;
-    //temp ui elements
-    public GameObject gameover;
     #endregion
 
     void Awake ()
@@ -94,7 +93,7 @@ public class RingManager : MonoBehaviour {
         }
         else
         {
-            shiftTimer = 0.0f;
+            shiftTimer = timeBetweenShifts;
         }
 
         //update each ring
@@ -125,8 +124,8 @@ public class RingManager : MonoBehaviour {
             {
                 //lose the game
                 //hermit dies
+                uiManager.GameOver();
                 ringQueue.Dequeue().DestroyRing(currentScaleSpeed);
-                gameover.SetActive(true);
             }
         }
 
