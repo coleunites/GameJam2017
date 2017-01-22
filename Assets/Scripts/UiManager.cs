@@ -8,8 +8,10 @@ public class UiManager : MonoBehaviour {
     private ImageSwap img_GameOver;
     public GameObject obj_InGame;
     public GameObject obj_TitleScreen;
+    private ImageSwap img_SpaceToPlay;
     private ImageSwap[] img_DirInput;
     private Text txt_Score;
+
 
     enum CurrentState
     {
@@ -28,11 +30,15 @@ public class UiManager : MonoBehaviour {
         img_DirInput[1] = obj_InGame.transform.FindChild("Img_Down").GetComponent<ImageSwap>();
         img_DirInput[2] = obj_InGame.transform.FindChild("Img_Left").GetComponent<ImageSwap>();
         img_DirInput[3] = obj_InGame.transform.FindChild("Img_Right").GetComponent<ImageSwap>();
-        txt_Score = obj_InGame.transform.FindChild("Txt_Score").GetComponent<Text>();
+        txt_Score = this.transform.FindChild("Txt_Score").GetComponent<Text>();
         img_GameOver = obj_GameOver.transform.FindChild("Img_GameOver").GetComponent<ImageSwap>();
+        img_SpaceToPlay = obj_TitleScreen.transform.FindChild("Img_SpaceToPlay").GetComponent<ImageSwap>();
+
 
         currentState = CurrentState.TitleScreen;
-        EnableNew(CurrentState.InGame); //should start on title screen but we don't have that yet. 
+        EnableNew(CurrentState.TitleScreen);
+        img_SpaceToPlay.Play(true, 0.80f);
+
 	}
 	
 	// Update is called once per frame
@@ -42,6 +48,11 @@ public class UiManager : MonoBehaviour {
         switch (currentState)
         {
             case CurrentState.TitleScreen:
+                if (Input.GetKeyUp(KeyCode.Space))
+                {
+                    EnableNew(CurrentState.InGame);
+
+                }
                 break;
             case CurrentState.InGame:
                 //check for button input (kinda ugly but whatevs) ¯\_(ツ)_/¯ 
@@ -80,6 +91,12 @@ public class UiManager : MonoBehaviour {
                 }
                 break;
             case CurrentState.LoseGame:
+                //Space to restart
+                if (Input.GetKeyUp(KeyCode.Space))
+                {
+                    //restart the game
+                    EnableNew(CurrentState.TitleScreen);
+                }
                 break;
             default:
                 break;
