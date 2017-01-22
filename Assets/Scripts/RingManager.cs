@@ -17,12 +17,18 @@ public class RingManager : MonoBehaviour {
     public float destroyRingSize;
     public float rotationDegrees = 5.625f;
     public UiManager uiManager;
+    public float firstRing = 4.0f;
 
 	public float currentScaleSpeed;
+    public Color selectedColor = Color.white;
+
+    private Color oldColor;
+    private Color newColor;
     private float currentRotationRange;
-    private float scaleOfLast = 5.0f;
+    private float scaleOfLast;
     private float scaleSpeedTracker = 0.0f;
     private float prevScalePeriod = 0.0f;
+    private int ringCounter;
     #endregion
 
     //items for controls and ring manipulation
@@ -38,6 +44,8 @@ public class RingManager : MonoBehaviour {
         ringQueue = new Queue<RingController>();
         currentScaleSpeed = startingRingSpeed;
         selectedRing = -1;
+        ringCounter = 0;
+        scaleOfLast = firstRing;
 	}
 
     void Update()
@@ -45,9 +53,12 @@ public class RingManager : MonoBehaviour {
         //update scale speed and rotation range
         prevScalePeriod = currentScaleSpeed;
 		currentScaleSpeed *= speedMultiplier;
+
+        hermit.MultiplySpeedFactor(speedMultiplier);
+
         scaleSpeedTracker += currentScaleSpeed - prevScalePeriod;
         currentRotationRange *= rotationMultiplier;
-        if (scaleOfLast > 5.0f)
+        if (scaleOfLast > firstRing)
         {
             float percentage = currentScaleSpeed;
             percentage *= Time.deltaTime * 0.1f; // multiply by 0.01f to convert of percentage to a nume of 0 to 1;
@@ -97,11 +108,13 @@ public class RingManager : MonoBehaviour {
         }
 
         //update each ring
-        foreach (RingController ring in ringQueue)
+        if (uiManager.CheckPlaying())
         {
-            ring.Scale(currentScaleSpeed);
+            foreach (RingController ring in ringQueue)
+            {
+                ring.Scale(currentScaleSpeed);
+            }
         }
-
         //check the smallest ring if it is close to us and check if we will survive it
         if (ringQueue.Count > 0 && ringQueue.Peek().gameObject.transform.localScale.x <= destroyRingSize)
         {
@@ -119,6 +132,7 @@ public class RingManager : MonoBehaviour {
                     SelectRing(selectedRing);
                 }
                 ringQueue.Dequeue().DestroyRing(currentScaleSpeed);
+                uiManager.UpdateScore(++ringCounter);
             }
             else
             {
@@ -139,16 +153,18 @@ public class RingManager : MonoBehaviour {
             if (count == newRing)
             {
                 //ring.gameObject.transform.localScale = new Vector3(ring.gameObject.transform.localScale.x + selectedUpscale, 1.0f, ring.gameObject.transform.localScale.z + selectedUpscale);
-                ring.SetSpriteColor(Color.white);
+                newColor = ring.GetSpriteColor();
+                ring.SetSpriteColorAlphaIndependent(selectedColor);
             }
             if (count == oldring)
             {
                 //ring.gameObject.transform.localScale = new Vector3(ring.gameObject.transform.localScale.x - selectedUpscale, 1.0f, ring.gameObject.transform.localScale.z - selectedUpscale);
-                ring.SetSpriteColor(Color.black);
+                ring.SetSpriteColorAlphaIndependent(oldColor);
             }
             count++;
         }
 
+        oldColor = newColor;
     }
 
     private void ShiftRing(int direction) //left 0, right 1
