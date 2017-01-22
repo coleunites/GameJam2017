@@ -17,10 +17,11 @@ public class RingManager : MonoBehaviour {
     public float destroyRingSize;
     public float rotationDegrees = 5.625f;
     public UiManager uiManager;
+    public float firstRing = 4.0f;
 
 	public float currentScaleSpeed;
     private float currentRotationRange;
-    private float scaleOfLast = 5.0f;
+    private float scaleOfLast;
     private float scaleSpeedTracker = 0.0f;
     private float prevScalePeriod = 0.0f;
     private int ringCounter;
@@ -40,6 +41,7 @@ public class RingManager : MonoBehaviour {
         currentScaleSpeed = startingRingSpeed;
         selectedRing = -1;
         ringCounter = 0;
+        scaleOfLast = firstRing;
 	}
 
     void Update()
@@ -52,7 +54,7 @@ public class RingManager : MonoBehaviour {
 
         scaleSpeedTracker += currentScaleSpeed - prevScalePeriod;
         currentRotationRange *= rotationMultiplier;
-        if (scaleOfLast > 5.0f)
+        if (scaleOfLast > firstRing)
         {
             float percentage = currentScaleSpeed;
             percentage *= Time.deltaTime * 0.1f; // multiply by 0.01f to convert of percentage to a nume of 0 to 1;
