@@ -71,6 +71,7 @@ public class RingManager : MonoBehaviour {
         hermit.MultiplySpeedFactor(speedMultiplier);
 
         scaleSpeedTracker += currentScaleSpeed - prevScalePeriod;
+
         currentRotationRange *= rotationMultiplier;
         if (scaleOfLast > firstRing)
         {

@@ -3,16 +3,11 @@ using System.Collections;
 
 public class ConstantRotation2D : MonoBehaviour
 {
-
-	// Use this for initialization
-	void Start ()
-    {
-	
-	}
+    public float mDegreesPerSec;
 	
 	// Update is called once per frame
 	void Update ()
     {
-	
-	}
+        transform.Rotate(transform.forward * mDegreesPerSec * Time.deltaTime);
+    }
 }
