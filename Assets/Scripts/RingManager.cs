@@ -16,6 +16,7 @@ public class RingManager : MonoBehaviour {
 
     public ConstantRotation2D whirlPool;
     public Animator mermaidAnim;
+    public float mermaidSpeedMultiplier = 1.0f;
 
     float mermaidSpeed;
 
@@ -83,7 +84,7 @@ public class RingManager : MonoBehaviour {
         hermit.MultiplySpeedFactor(speedMultiplier + 1);
         whirlPool.AffectSpeed(speedMultiplier);
         mermaidAnim.speed += mermaidAnim.speed * Time.deltaTime * speedMultiplier;
-        mermaidAnim.speed = Mathf.Clamp(mermaidAnim.speed, -maxScaleSpeed * 0.5f, maxScaleSpeed * 0.5f);
+        mermaidAnim.speed = Mathf.Clamp(mermaidAnim.speed, -maxScaleSpeed * mermaidSpeedMultiplier, maxScaleSpeed * mermaidSpeedMultiplier);
 
         scaleSpeedTracker += currentScaleSpeed - prevScalePeriod;
 
