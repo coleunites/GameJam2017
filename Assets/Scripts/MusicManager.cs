@@ -98,11 +98,16 @@ public class MusicManager : MonoBehaviour
     }
 
     // Use this for initialization
-    void Start ()
+    void Awake ()
     {
         instance = this;
 	}
 	
+    void OnDestroy()
+    {
+        instance = null;
+    }
+
 	// Update is called once per frame
 	void Update ()
     {
