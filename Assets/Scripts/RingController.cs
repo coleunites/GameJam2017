@@ -122,7 +122,7 @@ public class RingController : MonoBehaviour
         float newScale = - amplitude * Mathf.Cos(frequency * linearPos) + scaleSpeed * linearPos + minRingSize +0.5f;
         this.transform.localScale = new Vector3(newScale, newScale, 1.0f);
 
-
+        Debug.Log("linpos- " + linearPos);
 
     }
 
