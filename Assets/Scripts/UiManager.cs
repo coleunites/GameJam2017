@@ -12,6 +12,7 @@ public class UiManager : MonoBehaviour {
     private ImageSwap[] img_DirInput;
     private Text txt_Score;
 
+    public bool playingGame;
 
     enum CurrentState
     {
@@ -38,7 +39,7 @@ public class UiManager : MonoBehaviour {
         currentState = CurrentState.TitleScreen;
         EnableNew(CurrentState.TitleScreen);
         img_SpaceToPlay.Play(true, 0.80f);
-
+        PauseGame();
 	}
 	
 	// Update is called once per frame
@@ -51,7 +52,7 @@ public class UiManager : MonoBehaviour {
                 if (Input.GetKeyUp(KeyCode.Space))
                 {
                     EnableNew(CurrentState.InGame);
-
+                    PlayGame();
                 }
                 break;
             case CurrentState.InGame:
@@ -105,9 +106,9 @@ public class UiManager : MonoBehaviour {
 
     public void GameOver()
     {
-
         EnableNew(CurrentState.LoseGame);
         img_GameOver.Play();
+        PauseGame();
     }
 
     public void UpdateScore(int newScore)
@@ -139,6 +140,22 @@ public class UiManager : MonoBehaviour {
                 return null;
         }
     }
-    
+
+    private void PauseGame()
+    {
+        playingGame = false;
+        Time.timeScale = 0;
+    }
+
+    private void PlayGame()
+    {
+        playingGame = true;
+        Time.timeScale = 1;
+    }
+
+    public bool CheckPlaying()
+    {
+        return playingGame;
+    }
 
 }

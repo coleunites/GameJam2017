@@ -23,6 +23,7 @@ public class RingManager : MonoBehaviour {
     private float scaleOfLast = 5.0f;
     private float scaleSpeedTracker = 0.0f;
     private float prevScalePeriod = 0.0f;
+    private int ringCounter;
     #endregion
 
     //items for controls and ring manipulation
@@ -38,6 +39,7 @@ public class RingManager : MonoBehaviour {
         ringQueue = new Queue<RingController>();
         currentScaleSpeed = startingRingSpeed;
         selectedRing = -1;
+        ringCounter = 0;
 	}
 
     void Update()
@@ -100,11 +102,13 @@ public class RingManager : MonoBehaviour {
         }
 
         //update each ring
-        foreach (RingController ring in ringQueue)
+        if (uiManager.CheckPlaying())
         {
-            ring.Scale(currentScaleSpeed);
+            foreach (RingController ring in ringQueue)
+            {
+                ring.Scale(currentScaleSpeed);
+            }
         }
-
         //check the smallest ring if it is close to us and check if we will survive it
         if (ringQueue.Count > 0 && ringQueue.Peek().gameObject.transform.localScale.x <= destroyRingSize)
         {
@@ -122,6 +126,7 @@ public class RingManager : MonoBehaviour {
                     SelectRing(selectedRing);
                 }
                 ringQueue.Dequeue().DestroyRing(currentScaleSpeed);
+                uiManager.UpdateScore(++ringCounter);
             }
             else
             {

@@ -24,7 +24,7 @@ public class ImageSwap : MonoBehaviour {
     {
         if (playing)
         {
-            timer += Time.deltaTime;
+            timer += Time.unscaledDeltaTime;
             if (timer >= animateOverTime)
             {
                 NextSprite();
