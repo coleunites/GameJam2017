@@ -31,7 +31,6 @@ public class RingManager : MonoBehaviour {
     public int upperSelectionLimit = 5;
     public float timeBetweenShifts = 0.15f;
     private float shiftTimer;
-    private int ringCounter;
     #endregion
 
     void Awake ()
@@ -39,7 +38,6 @@ public class RingManager : MonoBehaviour {
         ringQueue = new Queue<RingController>();
         currentScaleSpeed = startingRingSpeed;
         selectedRing = -1;
-        ringCounter = 0;
 	}
 
     void Update()
@@ -47,6 +45,9 @@ public class RingManager : MonoBehaviour {
         //update scale speed and rotation range
         prevScalePeriod = currentScaleSpeed;
 		currentScaleSpeed *= speedMultiplier;
+
+        hermit.MultiplySpeedFactor(speedMultiplier);
+
         scaleSpeedTracker += currentScaleSpeed - prevScalePeriod;
         currentRotationRange *= rotationMultiplier;
         if (scaleOfLast > 5.0f)
@@ -121,7 +122,6 @@ public class RingManager : MonoBehaviour {
                     SelectRing(selectedRing);
                 }
                 ringQueue.Dequeue().DestroyRing(currentScaleSpeed);
-                ringCounter++;
             }
             else
             {

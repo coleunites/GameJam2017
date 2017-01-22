@@ -20,6 +20,7 @@ public class HermitController : MonoBehaviour
 
     public float mAdvanceDuration;
     public float mRetreatDuration;
+    public float mMinDuration = 0.05f;
 
     public Vector3 mAdvancePosition;
     Vector3 mIntialPos;
@@ -34,8 +35,26 @@ public class HermitController : MonoBehaviour
     bool mWillSurvive = true;
 
     float mSpeedFactor = 1.0f;
+    float mActualDuration = 0.0f;
 
     Animator mAnim;
+
+    public void MultiplySpeedFactor(float amount)
+    {
+        mSpeedFactor *= amount;
+
+        switch(mCurState)
+        {
+            case HermitState.advancing:
+            case HermitState.retreating:
+            case HermitState.death:
+                break;
+
+            case HermitState.idle:
+                mActualDuration = Mathf.Clamp(mAdvanceDuration * (1 / mSpeedFactor), mMinDuration, Mathf.Infinity);
+                break;
+        }
+    }
 
     void Start()
     {
@@ -61,19 +80,19 @@ public class HermitController : MonoBehaviour
                 break;
             case HermitState.advancing:
                 mAnim.speed = mAdvancingSpeed;
-
                 mSpriteObject.transform.position = 
-                    Vector3.Lerp(mIntialPos, mAdvancePosition, mTimeElpased /mAdvanceDuration);
-                if(mAdvanceDuration < mTimeElpased)
+                    Vector3.Lerp(mIntialPos, mAdvancePosition, mTimeElpased / mActualDuration);
+                if(mActualDuration < mTimeElpased)
                 {
                     mCurState = HermitState.retreating;
                     mTimeElpased = 0.0f;
+                    mActualDuration = Mathf.Clamp(mRetreatDuration * (1 / mSpeedFactor), mMinDuration, Mathf.Infinity);
                 }
                 break;
             case HermitState.retreating:
                 mSpriteObject.transform.position =
-                    Vector3.Lerp(mAdvancePosition, mIntialPos, mTimeElpased /mRetreatDuration);
-                if (mRetreatDuration < mTimeElpased)
+                    Vector3.Lerp(mAdvancePosition, mIntialPos, mTimeElpased / mActualDuration);
+                if (mActualDuration < mTimeElpased)
                 {
                     mCurState = HermitState.idle;
                 }
