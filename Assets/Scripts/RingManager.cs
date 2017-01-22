@@ -14,6 +14,9 @@ public class RingManager : MonoBehaviour {
     float soundTimer = 0.0f;
     #endregion
 
+    public ConstantRotation2D whirlPool;
+    public Animator mermaidAnim;
+
     #region Gameplay
     private Queue<RingController> ringQueue;
     public HermitController hermit;
@@ -75,6 +78,7 @@ public class RingManager : MonoBehaviour {
 		currentScaleSpeed = Mathf.Clamp(currentScaleSpeed + deltaSpeed, -maxScaleSpeed, maxScaleSpeed);
 
         hermit.MultiplySpeedFactor(speedMultiplier + 1);
+        whirlPool.AffectSpeed(speedMultiplier);
 
         scaleSpeedTracker += currentScaleSpeed - prevScalePeriod;
 
@@ -183,6 +187,7 @@ public class RingManager : MonoBehaviour {
                //!TEMP!
                 // uiManager.GameOver();
                 ringQueue.Dequeue().DestroyRing(currentScaleSpeed);
+                mermaidAnim.SetTrigger("Death");
             }
 
         }
