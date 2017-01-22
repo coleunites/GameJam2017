@@ -8,10 +8,12 @@ public class Detector : MonoBehaviour
     public SpriteRenderer mSpriteRenderer;
     public Sprite mNoRingsDetectedSprite;
     public Sprite mRingsDetectedSprite;
+    public Animator mAnim;
 
     List<uint> mRingsInDetecion;
-    public uint mClosetRing = 1;
-    public bool mIsColliding = false;
+    uint mClosetRing = 1;
+    bool mIsColliding = false;
+
 
     public void SetClosestRing(uint id)
     {
@@ -40,14 +42,7 @@ public class Detector : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if(mIsColliding)
-        {
-            mSpriteRenderer.sprite = mRingsDetectedSprite;
-        }
-        else
-        {
-            mSpriteRenderer.sprite = mNoRingsDetectedSprite;
-        }
+        mAnim.SetBool("RingsNearBy", mIsColliding);
 	}
 
     void OnTriggerEnter2D(Collider2D other)
