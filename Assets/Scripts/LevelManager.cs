@@ -65,7 +65,7 @@ public class LevelManager : MonoBehaviour
                 GameObject newRing = Instantiate(curPattern.mRings[i]);
                 RingController newRingController = newRing.GetComponent<RingController>();
                 newRingController.SetSpriteColor(mSections[mCurSection].mSectionColor);
-                mRingManager.AddRingToQueue(newRingController);
+                mRingManager.AddRingToQueue(newRingController, mSections[mCurSection].mSectionRotationDeg);
             }
             --mPatternsLeftInSection;
         }
@@ -81,6 +81,7 @@ public class Section
     public Color mSectionColor;
     public float mSectionScaleFactor = 1.0f;
     public Songs mSectionSong = Songs.slow;
+    public float mSectionRotationDeg = 0.0f;
 }
 
 [System.Serializable]

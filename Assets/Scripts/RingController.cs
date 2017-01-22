@@ -1,23 +1,35 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RingController : MonoBehaviour {
-
-    public float mTestScale = 0.0f;
-    public float mPerpetualMovement = 0.0f;
+public class RingController : MonoBehaviour
+{
+    float mPerpetualMovement = 0.0f;
     public SpriteRenderer mSprite;
+    Color mAlpha;
+
+    float mDistanceToStartFade = 0.0f;
+    float mDistanceToEndFade = 0.0f;
+    float mAlphaMax = 0.0f;
+
+    void Start()
+    {
+        mAlpha = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+    }
 
     // Update is called once per frame
     void Update ()
     {
-        //transform.forward = Quaternion.AngleAxis(mPerpetualMovement * Time.deltaTime, Vector3.forward) * transform.up;
         transform.Rotate(transform.forward * mPerpetualMovement * Time.deltaTime);
-        Scale(mTestScale);
+        if(mSprite.bounds.extents.x < mDistanceToStartFade && mSprite.bounds.extents.x > mDistanceToEndFade)
+        {
+
+ 
+        }
     }
 
     public void SetSpriteColor(Color color)
     {
-        mSprite.color = color;
+        mSprite.color = color; 
     }
 
     //Negitive degrees is left, postive degrees is right
@@ -30,7 +42,6 @@ public class RingController : MonoBehaviour {
     public void Rotate(float degrees)
     {
         transform.Rotate(transform.forward * degrees);
-        //transform.forward = Quaternion.AngleAxis(degrees, Vector3.forward) * transform.up;
     }
 
     //postive percetage will scale down, negtive percetnage will scale up
@@ -44,5 +55,12 @@ public class RingController : MonoBehaviour {
     public void DestroyRing(float timeScale)
     {
         Destroy(this.gameObject);
+    }
+
+    public void SetFadeDistances(float distToStartFade, float distToEndFade)
+    {
+        mDistanceToEndFade = distToEndFade;
+        mDistanceToStartFade = distToStartFade;
+        mAlphaMax = distToStartFade - distToStartFade;
     }
 }
