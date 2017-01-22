@@ -2,11 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(AudioSource))]
 public class RingManager : MonoBehaviour {
 
     //RingManager holds and controls the queue for each individual ring entering the game
 
     //items for game flow
+    #region Sound
+    public float soundCoolDown = 0.5f;
+    AudioSource audioSource;
+    float soundTimer = 0.0f;
+    #endregion
+
     #region Gameplay
     private Queue<RingController> ringQueue;
     public HermitController hermit;
@@ -48,10 +55,15 @@ public class RingManager : MonoBehaviour {
         selectedRing = -1;
         ringCounter = 0;
         scaleOfLast = firstRing;
+
+        audioSource = GetComponent<AudioSource>();
+        soundTimer = soundCoolDown;
 	}
 
     void Update()
     {
+        soundTimer += Time.deltaTime;
+
         //update scale speed and rotation range
         prevScalePeriod = currentScaleSpeed;
 		currentScaleSpeed = Mathf.Clamp(currentScaleSpeed * speedMultiplier, -maxScaleSpeed, maxScaleSpeed);
@@ -92,6 +104,11 @@ public class RingManager : MonoBehaviour {
             {
                 shiftTimer = 0.0f;
                 ShiftRing(1);
+                if(soundTimer >= soundCoolDown)
+                {
+                    audioSource.Play();
+                    soundTimer = 0.0f;
+                }
             }
 
         }
@@ -102,6 +119,11 @@ public class RingManager : MonoBehaviour {
             {
                 shiftTimer = 0.0f;
                 ShiftRing(-1);
+                if (soundTimer >= soundCoolDown)
+                {
+                    audioSource.Play();
+                    soundTimer = 0.0f;
+                }
             }
         }
         else
@@ -154,6 +176,11 @@ public class RingManager : MonoBehaviour {
         if (ringQueue.Count > 0)
         {
             detector.SetClosestRing(ringQueue.Peek().GetId());
+            if(selectedRing == -1)
+            {
+                selectedRing = 0;
+                SelectRing(0);
+            }
         }
     }
 

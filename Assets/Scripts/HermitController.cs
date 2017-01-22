@@ -11,6 +11,7 @@ public enum HermitState
 }
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(AudioSource))]
 public class HermitController : MonoBehaviour
 {
 
@@ -109,6 +110,7 @@ public class HermitController : MonoBehaviour
         else
         {
             mCurState = HermitState.death;
+            GetComponent<AudioSource>().Play();
         }
 
 		mWillSurvive = true;

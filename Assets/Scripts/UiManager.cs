@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(AudioSource))]
 public class UiManager : MonoBehaviour {
 
     public GameObject obj_GameOver;
@@ -52,6 +53,7 @@ public class UiManager : MonoBehaviour {
             case CurrentState.TitleScreen:
                 if (Input.GetKeyUp(KeyCode.Space))
                 {
+                    GetComponent<AudioSource>().Play();
                     EnableNew(CurrentState.InGame);
                     PlayGame();
                 }
