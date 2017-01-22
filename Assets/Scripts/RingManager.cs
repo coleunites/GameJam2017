@@ -191,7 +191,7 @@ public class RingManager : MonoBehaviour {
                 //lose the game
                 //hermit dies
                //!TEMP!
-                // uiManager.GameOver();
+                uiManager.GameOver();
                 ringQueue.Dequeue().DestroyRing(currentScaleSpeed);
                 mermaidAnim.SetTrigger("Death");
             }
