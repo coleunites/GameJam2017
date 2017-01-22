@@ -71,9 +71,11 @@ public class RingManager : MonoBehaviour {
 
         //update scale speed and rotation range
         prevScalePeriod = currentScaleSpeed;
-		currentScaleSpeed = Mathf.Clamp(currentScaleSpeed * speedMultiplier, -maxScaleSpeed, maxScaleSpeed);
+        float deltaSpeed = currentScaleSpeed * Time.deltaTime * speedMultiplier;
+		currentScaleSpeed = Mathf.Clamp(currentScaleSpeed + deltaSpeed, -maxScaleSpeed, maxScaleSpeed);
+        Debug.Log(currentScaleSpeed);
 
-        hermit.MultiplySpeedFactor(speedMultiplier);
+        hermit.MultiplySpeedFactor(speedMultiplier + 1);
 
         scaleSpeedTracker += currentScaleSpeed - prevScalePeriod;
 
