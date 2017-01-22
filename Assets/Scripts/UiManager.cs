@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour {
 
@@ -7,6 +8,7 @@ public class UiManager : MonoBehaviour {
     public GameObject obj_InGame;
     public GameObject obj_TitleScreen;
     private ImageSwap[] img_DirInput;
+    private Text txt_Score;
 
     enum CurrentState
     {
@@ -25,7 +27,7 @@ public class UiManager : MonoBehaviour {
         img_DirInput[1] = obj_InGame.transform.FindChild("Img_Down").GetComponent<ImageSwap>();
         img_DirInput[2] = obj_InGame.transform.FindChild("Img_Left").GetComponent<ImageSwap>();
         img_DirInput[3] = obj_InGame.transform.FindChild("Img_Right").GetComponent<ImageSwap>();
-
+        txt_Score = obj_InGame.transform.FindChild("Txt_Score").GetComponent<Text>();
 
         currentState = CurrentState.TitleScreen;
         EnableNew(CurrentState.InGame); //should start on title screen but we don't have that yet. 
@@ -86,13 +88,20 @@ public class UiManager : MonoBehaviour {
     {
 
         currentState = CurrentState.LoseGame;
+        //set the score of the game over screen. 
 
+    }
+
+    public void UpdateScore(int newScore)
+    {
+        txt_Score.text = "Score: " + newScore;
     }
 
     private void EnableNew(CurrentState newState)
     {
         //disable old
         GetRelevent(currentState).SetActive(false);
+        //enable new
         GetRelevent(newState).SetActive(true);
         currentState = newState;
     }
@@ -112,4 +121,6 @@ public class UiManager : MonoBehaviour {
                 return null;
         }
     }
+    
+
 }
