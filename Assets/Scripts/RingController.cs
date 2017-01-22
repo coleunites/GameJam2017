@@ -24,6 +24,22 @@ public class RingController : MonoBehaviour
 
     uint mId;
 
+    //for Sin Wave
+    private float linearPos;
+    private float minRingSize;
+    private float amplitude;
+    private float frequency;
+
+    public void SetSineWave(float posOnLine, float destroyRingAtSize, float freq, float amp)
+    {
+        linearPos = posOnLine;
+        //just do this here because it shouldn't change 
+        minRingSize = destroyRingAtSize;
+        frequency = freq;
+        amplitude = amp;
+    }
+
+
     void Start()
     {
         mId = nextId;
@@ -95,11 +111,19 @@ public class RingController : MonoBehaviour
     }
 
     //postive percetage will scale down, negtive percetnage will scale up
-    public void Scale(float percentage)
+    public void Scale( float scaleSpeed )
     {
-        percentage *= Time.deltaTime * 0.1f; // multiply by 0.01f to convert of percentage to a nume of 0 to 1;
-        percentage = 1.0f - percentage; // get the sacle factor
-        transform.localScale = transform.localScale * percentage;
+        linearPos -= (scaleSpeed * Time.deltaTime * 0.5f);
+
+        scaleSpeed = scaleSpeed * 0.1f;
+
+        //y = sin(x) + ax + b
+        //scale = sin(linearPos) + scaleSpeed * LinearPos + minRingSize 
+        float newScale = - amplitude * Mathf.Cos(frequency * linearPos) + scaleSpeed * linearPos + minRingSize;
+        this.transform.localScale = new Vector3(newScale, newScale, 1.0f);
+
+
+
     }
 
     public void DestroyRing(float timeScale)

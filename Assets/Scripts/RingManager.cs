@@ -48,6 +48,11 @@ public class RingManager : MonoBehaviour {
     private float shiftTimer;
     #endregion
 
+    //Items for fine control of the wave
+    public float amplitude = 0.8f;
+    public float frequency = 2.0f;
+
+
     void Awake ()
     {
         ringQueue = new Queue<RingController>();
@@ -73,12 +78,17 @@ public class RingManager : MonoBehaviour {
         scaleSpeedTracker += currentScaleSpeed - prevScalePeriod;
 
         currentRotationRange *= rotationMultiplier;
+
+        //for keeping scaleOfLast Aligned to the in game rings
         if (scaleOfLast > firstRing)
         {
-            float percentage = currentScaleSpeed;
+            /*float percentage = currentScaleSpeed;
             percentage *= Time.deltaTime * 0.1f; // multiply by 0.01f to convert of percentage to a nume of 0 to 1;
             percentage = 1.0f - percentage; // get the sacle factor
-            scaleOfLast = scaleOfLast * percentage;
+            scaleOfLast = scaleOfLast * percentage;*/
+
+            scaleOfLast -= (currentScaleSpeed * Time.deltaTime * 0.5f);
+
         }
 
         //controls for selecting rings
@@ -225,9 +235,10 @@ public class RingManager : MonoBehaviour {
     public void AddRingToQueue(RingController newRing, float perpetualRotationRange = 0.0f)
     {
         //set it's size relitive to the last
-        float newScale = scaleOfLast * scaleAboveLastMultiplier;
+        float newScale = scaleOfLast * scaleAboveLastMultiplier * 0.6f;
         scaleOfLast = newScale;
-        newRing.gameObject.transform.localScale = new Vector3(newScale, newScale, 1.0f);
+        newRing.SetSineWave(newScale, destroyRingSize, frequency, amplitude);
+        newRing.Scale(currentScaleSpeed);
         //set it's perpetual rotation
         newRing.SetPerpetualMotion(Random.Range(perpetualRotationRange, -perpetualRotationRange));
         
