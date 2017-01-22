@@ -56,6 +56,17 @@ public class RingController : MonoBehaviour
         mSprite.color = color; 
     }
 
+    public void SetSpriteColorAlphaIndependent(Color color)
+    {
+        Color newColor = new Color(color.r, color.g, color.b, mSprite.color.a);
+        mSprite.color = newColor;
+    }
+
+    public Color GetSpriteColor()
+    {
+        return mSprite.color;
+    }
+
     //Negitive degrees is left, postive degrees is right
     public void SetPerpetualMotion(float speedInDeg)
     {

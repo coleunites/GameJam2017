@@ -20,6 +20,10 @@ public class RingManager : MonoBehaviour {
     public float firstRing = 4.0f;
 
 	public float currentScaleSpeed;
+    public Color selectedColor = Color.white;
+
+    private Color oldColor;
+    private Color newColor;
     private float currentRotationRange;
     private float scaleOfLast;
     private float scaleSpeedTracker = 0.0f;
@@ -149,16 +153,18 @@ public class RingManager : MonoBehaviour {
             if (count == newRing)
             {
                 //ring.gameObject.transform.localScale = new Vector3(ring.gameObject.transform.localScale.x + selectedUpscale, 1.0f, ring.gameObject.transform.localScale.z + selectedUpscale);
-                ring.SetSpriteColor(Color.white);
+                newColor = ring.GetSpriteColor();
+                ring.SetSpriteColorAlphaIndependent(selectedColor);
             }
             if (count == oldring)
             {
                 //ring.gameObject.transform.localScale = new Vector3(ring.gameObject.transform.localScale.x - selectedUpscale, 1.0f, ring.gameObject.transform.localScale.z - selectedUpscale);
-                ring.SetSpriteColor(Color.black);
+                ring.SetSpriteColorAlphaIndependent(oldColor);
             }
             count++;
         }
 
+        oldColor = newColor;
     }
 
     private void ShiftRing(int direction) //left 0, right 1
