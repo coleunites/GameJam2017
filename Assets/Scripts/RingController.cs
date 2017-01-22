@@ -3,6 +3,8 @@ using System.Collections;
 
 public class RingController : MonoBehaviour
 {
+    static uint nextId = 1;
+
     float mPerpetualMovement = 0.0f;
     public SpriteRenderer mSprite;
     Color mAlpha;
@@ -19,6 +21,14 @@ public class RingController : MonoBehaviour
     float mAlphaMax = 1.0f;
     float mTimeElpased = 0.0f;
     Vector3 mScaleBeforeDeath;
+
+    uint mId;
+
+    void Start()
+    {
+        mId = nextId;
+        ++nextId;
+    }
 
     // Update is called once per frame
     void Update ()
@@ -49,6 +59,11 @@ public class RingController : MonoBehaviour
             }
             mSprite.color = mAlpha;
         }
+    }
+
+    public uint GetId()
+    {
+        return mId;
     }
 
     public void SetSpriteColor(Color color)

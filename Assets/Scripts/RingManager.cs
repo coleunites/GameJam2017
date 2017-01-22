@@ -21,6 +21,7 @@ public class RingManager : MonoBehaviour {
 
 	public float currentScaleSpeed;
     public Color selectedColor = Color.white;
+    public Detector detector;
 
     private Color oldColor;
     private Color newColor;
@@ -121,6 +122,7 @@ public class RingManager : MonoBehaviour {
             //tell hermit controller to check if we survive this ring
             if (hermit.CheckIfSurvies())
             {
+                detector.RemoveId(ringQueue.Peek().GetId());
                 //set this ring to kill itself and remove it from the queue
                 //update the selected ring
                 if (selectedRing >= 0)
@@ -133,6 +135,10 @@ public class RingManager : MonoBehaviour {
                 }
                 ringQueue.Dequeue().DestroyRing(currentScaleSpeed);
                 uiManager.UpdateScore(++ringCounter);
+                if(ringQueue.Count>0)
+                {
+                    detector.SetClosestRing(ringQueue.Peek().GetId());
+                }
             }
             else
             {
@@ -141,8 +147,13 @@ public class RingManager : MonoBehaviour {
                 uiManager.GameOver();
                 ringQueue.Dequeue().DestroyRing(currentScaleSpeed);
             }
+
         }
 
+        if (ringQueue.Count == 1)
+        {
+            detector.SetClosestRing(ringQueue.Peek().GetId());
+        }
     }
 
     private void SelectRing(int newRing, int oldring = -1)

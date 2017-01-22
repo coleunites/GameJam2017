@@ -111,7 +111,7 @@ public class MusicManager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        mTimeElpased += Time.deltaTime;
+        mTimeElpased += Time.unscaledDeltaTime;
         switch(mCurState)
         {
             case MusicState.allFadeOut:
