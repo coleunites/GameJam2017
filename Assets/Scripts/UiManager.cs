@@ -106,6 +106,13 @@ public class UiManager : MonoBehaviour {
             default:
                 break;
         }
+
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
+
     }
 
     public void GameOver()
