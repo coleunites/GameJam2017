@@ -100,6 +100,7 @@ public class RingManager : MonoBehaviour {
             scaleOfLast -= (currentScaleSpeed * Time.deltaTime * 0.5f);
 
         }
+        Debug.Log("last- " + scaleOfLast);
 
         //controls for selecting rings
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
@@ -188,7 +189,8 @@ public class RingManager : MonoBehaviour {
             {
                 //lose the game
                 //hermit dies
-                uiManager.GameOver();
+               //!TEMP!
+                // uiManager.GameOver();
                 ringQueue.Dequeue().DestroyRing(currentScaleSpeed);
                 mermaidAnim.SetTrigger("Death");
             }
@@ -246,7 +248,7 @@ public class RingManager : MonoBehaviour {
     public void AddRingToQueue(RingController newRing, float perpetualRotationRange = 0.0f)
     {
         //set it's size relitive to the last
-        float newScale = scaleOfLast * scaleAboveLastMultiplier * 0.6f;
+        float newScale = scaleOfLast + scaleAboveLastMultiplier * 2.0f;
         scaleOfLast = newScale;
         newRing.SetSineWave(newScale, destroyRingSize, frequency, amplitude);
         newRing.Scale(currentScaleSpeed);
