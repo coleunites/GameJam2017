@@ -15,6 +15,9 @@ public class LevelManager : MonoBehaviour
     [Range(0.0f, 1.0f)]
     public float mEndOfSectionSpeedReduction = 0.15f;
 
+    public float mDistToStartFadeRingsIn = Mathf.Infinity;
+    public float mDistToEndFadeRingsIn = Mathf.Infinity;
+
     int mCurSection = 0;
     int mPatternsLeftInSection = 0;
 
@@ -64,7 +67,10 @@ public class LevelManager : MonoBehaviour
             {
                 GameObject newRing = Instantiate(curPattern.mRings[i]);
                 RingController newRingController = newRing.GetComponent<RingController>();
+                mSections[mCurSection].mSectionColor.a = 0.0f;
                 newRingController.SetSpriteColor(mSections[mCurSection].mSectionColor);
+                mSections[mCurSection].mSectionColor.a = 1.0f;
+                newRingController.SetFadeDistances(mDistToStartFadeRingsIn, mDistToEndFadeRingsIn);
                 mRingManager.AddRingToQueue(newRingController, mSections[mCurSection].mSectionRotationDeg);
             }
             --mPatternsLeftInSection;

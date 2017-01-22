@@ -87,10 +87,18 @@ public class HermitController : MonoBehaviour
     public bool CheckIfSurvies()
     {
         bool returnVal = mWillSurvive;
-		mWillSurvive = true;
 
-        mCurState = HermitState.advancing;
-        mTimeElpased = 0.0f;
+        if(mWillSurvive && mCurState != HermitState.death)
+        {
+            mCurState = HermitState.advancing;
+            mTimeElpased = 0.0f;
+        }
+        else
+        {
+            mCurState = HermitState.death;
+        }
+
+		mWillSurvive = true;
 
         return returnVal;
     }

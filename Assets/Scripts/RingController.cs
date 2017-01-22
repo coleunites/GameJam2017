@@ -7,24 +7,29 @@ public class RingController : MonoBehaviour
     public SpriteRenderer mSprite;
     Color mAlpha;
 
-    float mDistanceToStartFade = 0.0f;
-    float mDistanceToEndFade = 0.0f;
-    float mAlphaMax = 0.0f;
-
-    void Start()
-    {
-        mAlpha = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-    }
+    float mDistanceToStartFade = Mathf.Infinity;
+    float mDistanceToEndFade = Mathf.Infinity;
+    float mAlphaMax = 1.0f;
 
     // Update is called once per frame
     void Update ()
     {
         transform.Rotate(transform.forward * mPerpetualMovement * Time.deltaTime);
-        if(mSprite.bounds.extents.x < mDistanceToStartFade && mSprite.bounds.extents.x > mDistanceToEndFade)
+        if(mSprite.bounds.extents.x < mDistanceToStartFade)
         {
-
- 
+            mAlpha = mSprite.color;
+            if(mSprite.bounds.extents.x > mDistanceToEndFade)
+            {
+                mAlpha.a =(mAlphaMax - (mSprite.bounds.extents.x - mDistanceToEndFade))/mAlphaMax;
+            }
+            else
+            {
+                mAlpha.a = 1.0f;
+            }
+            mSprite.color = mAlpha;
         }
+
+        Debug.Log(mSprite.bounds.extents);
     }
 
     public void SetSpriteColor(Color color)
@@ -61,6 +66,6 @@ public class RingController : MonoBehaviour
     {
         mDistanceToEndFade = distToEndFade;
         mDistanceToStartFade = distToStartFade;
-        mAlphaMax = distToStartFade - distToStartFade;
+        mAlphaMax = distToStartFade - distToEndFade;
     }
 }
